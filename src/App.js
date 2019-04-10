@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Pokemons from './components/pokemons';
 
 class App extends Component {
+  state = {
+    pokemons: []
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Pokemons pokemons = {this.state.pokemons} />
     );
+  }
+
+  componentDidMount() {
+    fetch('https://pokeapi.co/api/v2/pokemon/?limit=151')//will make a GET request to the endpoint 
+    .then(res => res.json()) //parses the output to JSON
+    .then((data) => {
+      this.setState({ pokemons: data.results })
+      console.log(this.state.pokemons)
+    })
+    .catch(console.log);
   }
 }
 
